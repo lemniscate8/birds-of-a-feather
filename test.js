@@ -1,3 +1,5 @@
+
+
 function setup()
 {
   var canvas = createCanvas(640, 480);
@@ -6,6 +8,18 @@ function setup()
 
 function draw()
 {
-  if(mouseIsPressed && canvas.mouseOver())
+  if(mouseIsPressed)
     ellipse(mouseX, mouseY, 80, 80);
+}
+
+canvasVisible = false;
+function toggleView()
+{
+  if(canvasVisible) {
+    canvas.hide();
+  }
+  else {
+    canvas.show();
+  }
+
 }

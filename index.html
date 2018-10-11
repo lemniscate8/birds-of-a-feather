@@ -7,14 +7,77 @@
     <meta name='veiwport' content='width=device-width, initial-scale=1'>
     <meta name='author' content='Tait Weicht'>
     <title>Birds of a Feather</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+
     <script type='text/javascript' src="p5/addons/p5.dom.js"></script>
     <script type='text/javascript' src="p5/p5.js"></script>
-    <script type='text/javascript' src="test.js"></script>
+
+    <script type='text/javascript' src="feather.js"></script>
   </head>
+
   <body>
-    <div class='container jumbotron' id='sketch-holder'>
-      
+    <div>
+      <ul class="nav nav-tabs nav-justified">
+        <li class='nav-item'><a href="#about" class='nav-link active' data-toggle="tab">About</a></li>
+        <li class='nav-item'><a href="#sim" class='nav-link' data-toggle="tab">Simulation Environment</a></li>
+        <li class='nav-item'><a href="#matrix" class='nav-link' data-toggle="tab">Agent Interactions</a></li>
+        <li class='nav-item'><a href="#code" class='nav-link' data-toggle="tab">Raw Code</a></li>
+      </ul>
+      <div class="tab-content">
+
+        <!-- About page -->
+        <div class="tab-pane fade" id="about">
+          About page
+        </div>
+        <!-- About page end -->
+
+
+        <!-- Simulation page -->
+        <div class="tab-pane fade container-fluid" id="sim">
+          <div class='row'>
+            <div class='col-sm-4' style='border:1px solid black'>
+
+              <!-- Agent type list -->
+              <button class="btn btn-primary" type="button" data-toggle="collapse" data-target=".multi-collapse" onclick='toggleView(sim)'>Toggle</button>
+              <!-- Agent type list end-->
+
+            </div>
+
+            <div class='col-sm-8' style='border:1px solid black'>
+              Right column
+              <div class='collapse multi-collapse show' style='border:1px solid black'>
+                <div class='card card-body'>
+                  Top card
+                </div>
+              </div>
+              <div class='collapse multi-collapse collapsed' style='border:1px solid black'>
+                <div class='card card-body' id='sketch-holder'>
+                  Bottom card
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- Simulation page end -->
+
+
+        <!-- Matrix page -->
+        <div class="tab-pane fade" id="matrix">
+          Matrix page
+        </div>
+        <!-- Matrix page end-->
+
+
+        <!-- Raw code page -->
+        <div class="tab-pane fade" id="code">
+          Raw code page
+        </div>
+        <!-- Raw code page end-->
+      </div>
     </div>
   </body>
 </html>
