@@ -11,7 +11,7 @@ var simulationSketch = function(sketch)
     sketch.createCanvas(640, 480); //Setup the canvas in the element passed in
     engine = new Engine(sketch.width, sketch.height, 10);
     species = new Species();
-    species.inter[species] = new Behavior(1, 0, 0, 0);
+    species.inter[species] = new Behavior(1, 1, 1, 1);
     for(var i = 0; i < 1000; i++) {
       engine.add(new Agent(sketch.random(0, sketch.width), sketch.random(0, sketch.height),
       species));

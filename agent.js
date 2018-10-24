@@ -79,7 +79,7 @@ class Agent {
       var cohes = cohesionVector(this, this.locale[type]);
       var separ = separationVector(this, this.locale[type]);
       var align = alignmentVector(this, this.locale[type]);
-      var wandr = wanderVector(this, .5);
+      var wandr = wanderVector(this, 1.5); //TODO: remove magic number
       //Apply behavioral weights
       var combo = behavior.process(cohes, separ, align, wandr);
       //Weight by the number of agents of that species
@@ -95,6 +95,7 @@ class Agent {
 
   update() {
     this.vel.add(this.acc);
+    this.vel.limit(5); //Limiting speeds
     this.pos.add(this.vel);
   }
 }
