@@ -14,8 +14,6 @@
 
     <script type='text/javascript' src="p5/addons/p5.dom.js"></script>
     <script type='text/javascript' src="p5/p5.js"></script>
-
-    <script type='text/javascript' src="feather.js"></script>
   </head>
 
   <body>
@@ -37,30 +35,9 @@
 
         <!-- Simulation page -->
         <div class="tab-pane fade container-fluid" id="sim">
-          <div class='row'>
-            <div class='col-sm-4' style='border:1px solid black'>
 
-              <!-- Agent type list -->
-              <button class="btn btn-primary" type="button" data-toggle="collapse" data-target=".multi-collapse" onclick='toggleView(sim)'>Toggle</button>
-              <!-- Agent type list end-->
+          <div class='container-fluid' id='sketchHolder'> </div>
 
-            </div>
-
-            <div class='col-sm-8' style='border:1px solid black'>
-              Right column
-              <div class='collapse multi-collapse show' style='border:1px solid black'>
-                <div class='card card-body'>
-                  Top card
-                </div>
-              </div>
-              <div class='collapse multi-collapse collapsed' style='border:1px solid black'>
-                <div class='card card-body' id='sketch-holder'>
-                  Bottom card
-                </div>
-              </div>
-            </div>
-
-          </div>
         </div>
         <!-- Simulation page end -->
 
@@ -80,4 +57,7 @@
       </div>
     </div>
   </body>
+  <script type='text/javascript' src="sim.js"></script>
+  <script type='text/javascript' src="engine.js"></script>
+  <script type='text/javascript' src="agent.js"></script>
 </html>
