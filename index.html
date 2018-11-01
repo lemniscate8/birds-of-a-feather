@@ -8,9 +8,11 @@
     <meta name='author' content='Tait Weicht'>
     <title>Birds of a Feather</title>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
     <script type='text/javascript' src="p5/addons/p5.dom.js"></script>
     <script type='text/javascript' src="p5/p5.js"></script>
@@ -18,46 +20,68 @@
 
   <body>
     <div>
-      <ul class="nav nav-tabs nav-justified">
-        <li class='nav-item'><a href="#about" class='nav-link active' data-toggle="tab">About</a></li>
-        <li class='nav-item'><a href="#sim" class='nav-link' data-toggle="tab">Simulation Environment</a></li>
-        <li class='nav-item'><a href="#matrix" class='nav-link' data-toggle="tab">Agent Interactions</a></li>
-        <li class='nav-item'><a href="#code" class='nav-link' data-toggle="tab">Raw Code</a></li>
+      <ul class="nav nav-tabs">
+        <li class='nav-item'><a href="#simTab" class='nav-link active ' data-toggle="tab">Simulation Environment</a></li>
+        <li class='nav-item'><a href="#matrixTab" class='nav-link' data-toggle="tab">Agent Interactions</a></li>
+        <li class='nav-item'><a href="#codeTab" class='nav-link' data-toggle="tab">Raw Code</a></li>
+        <li class='nav-item'><a href="#aboutTab" class='nav-link' data-toggle="tab">About</a></li>
       </ul>
       <div class="tab-content">
 
         <!-- About page -->
-        <div class="tab-pane fade" id="about">
+        <div class="tab-pane fade" id="aboutTab">
           About page
         </div>
         <!-- About page end -->
 
 
         <!-- Simulation page -->
-        <div class="tab-pane fade container-fluid" id="sim">
-
-          <div class='container-fluid' id='sketchHolder'> </div>
+        <div class="tab-pane fade container show active" id="simTab">
+          <div class='row mt-4'>
+            <div class='col-4'>
+              <div class='btn-group btn-group-large'>
+                <button type='button' class='btn btn-outline-primary only-one active default-mode' onclick='runMode=halt;'>Halt</button>
+                <button type='button' class='btn btn-outline-primary only-one' onclick='runMode=run;'>Run</button>
+              </div>
+              <div class='btn-group btn-group-large'>
+                <button type='button' class='btn btn-outline-primary only-one-light active'>Add</button>
+                <button type='button' class='btn btn-outline-primary only-one'>Remove</button>
+              </div>
+              <ul class='list-group mt-2' id='speciesList'>
+                <li class='list-group-item list-group-item-primary only-one-light'>Species 1</li>
+                <li class='list-group-item only-one-light'>Species 2</li>
+                <li class='list-group-item only-one-light'>Species 3</li>
+                <li class='list-group-item close'><span onclick="addSpecies()">&plus;</span></li>
+              </ul>
+            </div>
+            <div class='col-8' id='simHolder'>
+            </div>
+          </div>
 
         </div>
         <!-- Simulation page end -->
 
 
         <!-- Matrix page -->
-        <div class="tab-pane fade" id="matrix">
-          Matrix page
+        <div class="tab-pane fade" id="matrixTab">
+          <div class='row mt-4' id='interMatrix'>
+
+          </div>
         </div>
         <!-- Matrix page end-->
 
 
         <!-- Raw code page -->
-        <div class="tab-pane fade" id="code">
+        <div class="tab-pane fade" id="codeTab">
           Raw code page
         </div>
         <!-- Raw code page end-->
       </div>
     </div>
   </body>
+
   <script type='text/javascript' src="sim.js"></script>
   <script type='text/javascript' src="engine.js"></script>
   <script type='text/javascript' src="agent.js"></script>
+  <script type='text/javascript' src="helpers.js"></script>
 </html>

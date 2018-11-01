@@ -30,9 +30,9 @@ class Transition {
 //Eventually this will need to also be/link to a document elemnent
 //so that we can interact with these variables
 class Species {
-  constructor() {
-    this.size = 5;
-    this.range = 20;
+  constructor(dispSize, rangeOfInter) {
+    this.size = dispSize;
+    this.range = rangeOfInter;
     this.inter = {};
     this.trans = {};
   }
@@ -52,7 +52,7 @@ class Species {
 class Agent {
   constructor(x, y, species) {
     this.pos = sim.createVector(x, y);
-    this.vel = sim.createVector();
+    this.vel = p5.Vector.random2D();
     this.acc = sim.createVector();
     this.species = species;
     this.locale = {};

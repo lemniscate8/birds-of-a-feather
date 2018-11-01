@@ -16,6 +16,7 @@ class Engine {
     for(let i in this.agents) {
       this.agents[i].update();
     }
+    this.boundaryRepulse(5, 5);
     this.clearBuckets();
     //popManage(this.agents); //Add or remove agents at this point
     this.rehash(); //Rehash the agents
@@ -167,6 +168,22 @@ class Engine {
     } else if(object.pos.y > this.height) {
       object.pos.y = this.height;
     }
+  }
+
+  boundaryRepulse(edge, force) {
+    for(let agent of this.agents) {
+      if(agent.pos.x < edge) {
+        agent.vel.x += force;
+      } else if(agent.pos.x > this.width - edge) {
+        agent.vel.x -= force;
+      }
+      if(agent.pos.y < edge) {
+        agent.vel.y += 1;
+      } else if(agent.pos.y > this.height - edge) {
+        agent.vel.y -= force;
+      }
+    }
+
   }
 
   remove(object) {
