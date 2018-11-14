@@ -21,38 +21,66 @@
   <body>
     <div>
       <ul class="nav nav-tabs">
-        <li class='nav-item'><a href="#simTab" class='nav-link active ' data-toggle="tab">Simulation Environment</a></li>
-        <li class='nav-item'><a href="#matrixTab" class='nav-link' data-toggle="tab">Agent Interactions</a></li>
-        <li class='nav-item'><a href="#codeTab" class='nav-link' data-toggle="tab">Raw Code</a></li>
-        <li class='nav-item'><a href="#aboutTab" class='nav-link' data-toggle="tab">About</a></li>
+        <li class='nav-item'><a href="#aboutTab" class='nav-link active' data-toggle="tab">About</a></li>
+        <li class='nav-item'><a href="#simTab" class='nav-link ' data-toggle="tab">Simulation Environment</a></li>
+        <li class='nav-item'><a href="#matrixTab" class='nav-link' data-toggle="tab" onclick="genTable()">Agent Interactions</a></li>
+        <li class='nav-item'><a href="#transTab" class='nav-link' data-toggle="tab">Agent Transitions</a></li>
       </ul>
       <div class="tab-content">
 
         <!-- About page -->
-        <div class="tab-pane fade" id="aboutTab">
-          About page
+        <div class='tab-pane fade show active' id='aboutTab'>
+          <div class='container card mt-4'>
+            <div class='card-body'>
+              <h1 class='card-title'>Birds-of-a-Feather</h1>
+              <h6 class='card-subtitle text-muted mb-2'>(flock together)</h1>
+              <p>
+                Birds-of-a-Feather is an agent-based modeling simulation.
+                You can define groups of agents (called 'species') and choose their
+                maximum speed, view distance, size and color. What's really special
+                though is you can define how agents interact with each other.
+              </p>
+              <h3 class='card-title'>Interactions</h3>
+              <p>
+                Standard simulations of flocking behavior recognize four different
+                ways that agents respond to other agent in their locale.
+              </p>
+              <ul class='list-group'>
+                <li class='list-group-item'>Cohesion</li>
+                <li class='list-group-item'>Avoidance</li>
+                <li class='list-group-item'>Alignment</li>
+                <li class='list-group-item'>Wandering</li>
+              </ul>
+            </div>
+          </div>
         </div>
         <!-- About page end -->
 
-
         <!-- Simulation page -->
-        <div class="tab-pane fade container show active" id="simTab">
+        <div class='tab-pane fade container' id='simTab'>
           <div class='row mt-4'>
-            <div class='col-4'>
-              <div class='btn-group btn-group-large'>
-                <button type='button' class='btn btn-outline-primary only-one active default-mode' onclick='runMode=halt;'>Halt</button>
-                <button type='button' class='btn btn-outline-primary only-one' onclick='runMode=run;'>Run</button>
+            <div class='col-4 card' d-flex flexbox>
+              <!-- Control panel -->
+              <div class='d-flex flex-wrap justify-content-around pt-3'>
+                <div class='btn-group btn-group-large m-1'>
+                  <button type='button' class='btn btn-outline-primary only-one active default-mode' onclick='runMode=halt;'>Halt</button>
+                  <button type='button' class='btn btn-outline-primary only-one' onclick='runMode=run;'>Run</button>
+                </div>
+                <div class='btn-group btn-group-large m-1'>
+                  <button type='button' class='btn btn-outline-primary only-one active' onclick='touchMode=addAgents'>Add</button>
+                  <button type='button' class='btn btn-outline-primary only-one' onclick='touchMode=removeAgents'>Remove</button>
+                </div>
+                <button type='button' class='btn btn-outline-primary m-1' onclick=''>Reset Environment</button>
+                <button type='button' class='btn btn-outline-primary m-1' onclick=''>Reset All</button>
               </div>
-              <div class='btn-group btn-group-large'>
-                <button type='button' class='btn btn-outline-primary only-one-light active'>Add</button>
-                <button type='button' class='btn btn-outline-primary only-one'>Remove</button>
+              <!-- Species list -->
+              <div>
+                <ul class='list-group mt-2' id='speciesList'>
+                  <li class='list-group-item text-center' id='speciesAdder'>
+                    <span class='close' onclick="species.push(new Species())">&plus;</span>
+                  </li>
+                </ul>
               </div>
-              <ul class='list-group mt-2' id='speciesList'>
-                <li class='list-group-item list-group-item-primary only-one-light'>Species 1</li>
-                <li class='list-group-item only-one-light'>Species 2</li>
-                <li class='list-group-item only-one-light'>Species 3</li>
-                <li class='list-group-item close'><span onclick="addSpecies()">&plus;</span></li>
-              </ul>
             </div>
             <div class='col-8' id='simHolder'>
             </div>
@@ -63,8 +91,8 @@
 
 
         <!-- Matrix page -->
-        <div class="tab-pane fade" id="matrixTab">
-          <div class='row mt-4' id='interMatrix'>
+        <div class='tab-pane fade container' id='matrixTab'>
+          <div class='mt-4' id='interMatrix'>
 
           </div>
         </div>
@@ -72,10 +100,11 @@
 
 
         <!-- Raw code page -->
-        <div class="tab-pane fade" id="codeTab">
+        <div class='tab-pane fade' id='transTab'>
           Raw code page
         </div>
         <!-- Raw code page end-->
+
       </div>
     </div>
   </body>

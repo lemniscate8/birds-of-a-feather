@@ -1,25 +1,27 @@
 //New canvases using p5 instance mode to allow for multiple sketches
 var engine;
-var species;
+var species = [];
+var activeSpecies;
 var interest = [];
+var mainSketch;
+
 var runMode;
 var touchMode;
+
 var penWidth = 10;
+var spacing = 2;
 
 var simulationSketch = function(sketch)
 {
+  mainSketch = sketch;
   sketch.setup = function()
   {
     sketch.createCanvas(640, 480); //Setup the canvas in the element passed in
-    engine = new Engine(sketch.width, sketch.height, 10);
-    species = new Species(2, 10);
-    species.inter[species] = new Behavior(5, 1, 1, 1);
-    /*
-    for(var i = 0; i < 1000; i++) {
-      engine.add(new Agent(sketch.random(0, sketch.width), sketch.random(0, sketch.height),
-      species));
-    }
-    */
+    engine = new Engine(sketch.width, sketch.height, 20);
+    species.push(new Species());
+    $(species[0].html).click();
+    activeSpecies.inter[activeSpecies] = new Behavior(5, 1, 1, 0);
+
     sketch.background(0);
     engine.show(sketch);
     runMode = halt;
@@ -63,8 +65,18 @@ var halt = function(sketch) {
 }
 
 var addAgents = function(sketch) {
+  if(activeSpecies == null)
+    return;
   var loc = p5.Vector.random2D().mult(penWidth).add(sketch.mouseX, sketch.mouseY);
-  if(engine.inround(loc, species.range).length == 0) {
-    engine.add(new Agent(loc.x, loc.y, species));
+  if(engine.inround(loc, spacing).length == 0) {
+    engine.add(new Agent(loc.x, loc.y, activeSpecies));
+  }
+}
+
+var removeAgents = function(sketch) {
+  var loc = sim.createVector(sketch.mouseX, sketch.mouseY);
+  var area = engine.inround(loc, penWidth);
+  for(let agent of area) {
+    engine.remove(agent);
   }
 }

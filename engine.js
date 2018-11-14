@@ -11,9 +11,6 @@ class Engine {
   update() {
     //preClear(this.agents); //Update or move agents
     for(let i in this.agents) {
-      this.agents[i].processLocale();
-    }
-    for(let i in this.agents) {
       this.agents[i].update();
     }
     this.boundaryRepulse(5, 5);

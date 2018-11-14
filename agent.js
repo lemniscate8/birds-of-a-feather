@@ -29,30 +29,35 @@ class Transition {
 
 //Eventually this will need to also be/link to a document elemnent
 //so that we can interact with these variables
+
+
+
 class Species {
-  constructor(dispSize, rangeOfInter) {
-    this.size = dispSize;
-    this.range = rangeOfInter;
+
+  constructor() {
+    this.size = 2;
+    this.range = 20;
+    this.maxSpeed = 2;
+    this.wanderDev = 1.5;
+    this.fixed = false;
+    this.name = 'Species #' + ('0000' + Math.floor(Math.random()*10000)).slice(-4);
+    this.html = speciesHTML(this.name);
+    this.id = ('000000' + Math.floor(Math.random()*1000000)).slice(-6);
     this.inter = {};
     this.trans = {};
   }
 
   putBehavior(species, behavior) {
-    this.trans[species] = behavior;
-  }
-
-  analyze(locale) { //TODO: finish this stuff
-    var satisfied = false;
-    for(var i = 0; i < this.trans.length && !satisfied; i++) {
-
-    }
+    this.trans[species.id] = behavior;
   }
 }
 
 class Agent {
   constructor(x, y, species) {
     this.pos = sim.createVector(x, y);
-    this.vel = p5.Vector.random2D();
+    this.vel = sim.createVector(
+      mainSketch.mouseX - mainSketch.pmouseX,
+      mainSketch.mouseY - mainSketch.pmouseY).normalize();
     this.acc = sim.createVector();
     this.species = species;
     this.locale = {};
@@ -75,11 +80,13 @@ class Agent {
     for(var type of keys) {
       //Determine proper interaction for agent
       var behavior = this.species.inter[type];
+      if(behavior == undefined)
+        continue;
       //Calculate base vectors
       var cohes = cohesionVector(this, this.locale[type]);
       var separ = separationVector(this, this.locale[type]);
       var align = alignmentVector(this, this.locale[type]);
-      var wandr = wanderVector(this, 1.5); //TODO: remove magic number
+      var wandr = wanderVector(this, this.species.wanderDev); //TODO: remove magic number
       //Apply behavioral weights
       var combo = behavior.process(cohes, separ, align, wandr);
       //Weight by the number of agents of that species
@@ -94,10 +101,17 @@ class Agent {
   }
 
   update() {
+    if(this.fixed)
+      return;
+    this.processLocale();
     this.vel.add(this.acc);
-    this.vel.limit(5); //Limiting speeds
+    this.vel.limit(this.species.maxSpeed); //Limiting speeds
     this.pos.add(this.vel);
   }
+}
+
+Species.prototype.toString = function() {
+  return this.id;
 }
 
 //Functions for computing group interation vectors
