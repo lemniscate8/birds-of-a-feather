@@ -1,4 +1,6 @@
 
+//TODO: Rename this file 'unhelpers' because it's become sooooo complicated
+
 //Switching pages causes simualtion defaults to be reset
 //(right now just stops the simulation)
 $('.nav-item').click(function() {
@@ -61,7 +63,7 @@ genTable = function() {
       $(add).click(addOrDisplayBehavior(add, species[i], species[j]));
       tableData.append(add);
       tableRow.append(tableData);
-      //If a behavior exists display it
+      //If a behavior exists, display it
       if(species[i].inter[species[j]])
         add.click();
     }
@@ -74,12 +76,15 @@ genTable = function() {
 
 addOrDisplayBehavior = function(element, species1, species2) {
   return function() {
-    var button = $(element);
+    var button = $(this);
     var outer = button.parent();
-    outer.append(behaviorWigget(species1, species2,
-      species1.inter[species2]));
+    outer.append(behaviorWigget(species1, species2, species1.inter[species2]));
+    if(species1.inter[species2] == undefined)
+      species1.inter[species2] = new Behavior(5, 5, 5, 5);
+    outer.find('input').change(function() {
+      alterInteraction(species1, species2).call(this);
+    });
     button.html('&times');
-    outer.select()
     button.click(function() {
       delete species1.inter[species2];
       outer.empty();
@@ -87,17 +92,13 @@ addOrDisplayBehavior = function(element, species1, species2) {
       button.html('+');
       button.click(addOrDisplayBehavior(button, species1, species2));
     });
-    console.log(outer.find('input'));
-    outer.find('input').change(function() {
-      alterInteraction(species1, species2).call(this);
-    });
   };
 }
 
 alterInteraction = function(species1, species2) {
   return function() {
     var source = $(this);
-    console.log(source.data('target') + ' ' + source.val());
+    species1.inter[species2][source.data('target')] = parseInt(source.val());
   };
 }
 
@@ -113,6 +114,23 @@ behaviorWigget = function(species1, species2, behavior) {
    min='0' max='10' id='${uid + 'stick'}' data-target='stick', step='1'` +
   (behavior ? `value='${behavior.stick}'` : `value='5'`) + `>`;
 
+  htmlString +=
+  `<label for='${uid + 'avoid'}' class='col-form-label col-form-label-sm'>
+  Avoidance:</label>\n <input type='range' class='form-control-range'
+   min='0' max='10' id='${uid + 'avoid'}' data-target='avoid', step='1'` +
+  (behavior ? `value='${behavior.avoid}'` : `value='5'`) + `>`;
+
+  htmlString +=
+  `<label for='${uid + 'align'}' class='col-form-label col-form-label-sm'>
+  Alignment:</label>\n <input type='range' class='form-control-range'
+   min='0' max='10' id='${uid + 'align'}' data-target='align', step='1'` +
+  (behavior ? `value='${behavior.align}'` : `value='5'`) + `>`;
+
+  htmlString +=
+  `<label for='${uid + 'wandr'}' class='col-form-label col-form-label-sm'>
+  Wandering:</label>\n <input type='range' class='form-control-range'
+   min='0' max='10' id='${uid + 'wandr'}' data-target='wandr', step='1'` +
+  (behavior ? `value='${behavior.wandr}'` : `value='5'`) + `>`;
 
   return htmlString;
 }
