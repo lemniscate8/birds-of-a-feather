@@ -75,8 +75,9 @@
               </div>
               <!-- Species list -->
               <div>
-                <ul class='list-group mt-2' id='speciesList'>
+                <ul class='list-group mt-2 mb-2' id='speciesList'>
                   <li class='list-group-item text-center' id='speciesAdder'>
+                    Add New Species
                     <span class='close' onclick="species.push(new Species())">&plus;</span>
                   </li>
                 </ul>
@@ -85,7 +86,14 @@
             <div class='col-8' id='simHolder'>
             </div>
           </div>
-
+          <div class='row mt-4 btn-group'>
+            <div class='btn btn-primary'>Presets:</div>
+            <button type='button' class='btn btn-light'>Flocking</button>
+            <button type='button' class='btn btn-light'>PredatorPrey</button>
+            <button type='button' class='btn btn-light'>AluminumMercury</button>
+            <button type='button' class='btn btn-light'>Redmatter</button>
+            <button type='button' class='btn btn-light'>Soap</button>
+          </div>
         </div>
         <!-- Simulation page end -->
 
@@ -99,11 +107,11 @@
         <!-- Matrix page end-->
 
 
-        <!-- Raw code page -->
-        <div class='tab-pane fade' id='transTab'>
-          Raw code page
+        <!-- State machines -->
+        <div class='tab-pane fade container' id='transTab'>
+          <div>Agent State Machines, Coming Soon!</div>
         </div>
-        <!-- Raw code page end-->
+        <!-- State machines end -->
 
       </div>
     </div>
