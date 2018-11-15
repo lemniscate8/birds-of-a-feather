@@ -18,12 +18,13 @@ speciesHTML = function(nameText) {
   var name = document.createTextNode(nameText);
   listItem.append(name);
   var closeSpan = document.createElement('span');
-  closeSpan.setAttribute('class','align-right close');
+  closeSpan.setAttribute('class','close speciesDelete');
   closeSpan.innerHTML = '&times';
   $(closeSpan).click(function() {
     var li = $(this).parent();
     if(li.hasClass('list-group-item-primary'));
       activeSpecies = null;
+    engine.remove(species[li.index()]);
     species.splice(li.index(), 1);
     li.remove();
   });
@@ -133,4 +134,13 @@ behaviorWigget = function(species1, species2, behavior) {
   (behavior ? `value='${behavior.wandr}'` : `value='5'`) + `>`;
 
   return htmlString;
+}
+
+resetEnvironment = function() {
+  engine.agents = [];
+}
+
+resetAll = function() {
+  engine.agents = [];
+  $('.speciesDelete').click();
 }
