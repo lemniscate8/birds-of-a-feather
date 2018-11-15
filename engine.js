@@ -184,9 +184,23 @@ class Engine {
   }
 
   remove(object) {
-    var index = this.agents.indexOf(object);
-    if(index > -1) {
-      this.agents.splice(index, 1)
+    if(object instanceof Agent) {
+      var index = this.agents.indexOf(object);
+      if(index > -1) {
+        this.agents.splice(index, 1)
+      }
+    } else if(object instanceof Species) {
+      var list = [];
+      for(let agent of this.agents) {
+        if(agent.species != object) {
+          list.push(agent);
+        }
+      }
+      this.agents = list;
+    } else if(object instanceof Array) {
+      for(let piece of object) {
+        this.remove(piece);
+      }
     }
   }
 }
