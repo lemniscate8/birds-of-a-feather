@@ -53,61 +53,66 @@ genTable = function() {
     tableRow.innerHTML = '<th scope="row">' + species[i].name + '</th>\n';
     for(var j = 0; j < species.length; j++) {
       tableData = document.createElement('td');
-      var behavior = species[i].inter[species[j]];
-      if(behavior) {
-        tableData.innerHTML = "Behavior Found";
-      } else {
-        var add = document.createElement('span');
-        add.setAttribute('class','close addInterWidget');
-        add.setAttribute('data-species1', species[i].id);
-        add.setAttribute('data-species2', species[j].id);
-        add.innerHTML = '+';
-        tableData.append(add);
-      }
+      var add = document.createElement('span');
+      add.setAttribute('class','close');
+      add.setAttribute('data-species1', species[i].id);
+      add.setAttribute('data-species2', species[j].id);
+      add.innerHTML = '+';
+      $(add).click(addOrDisplayBehavior(add, species[i], species[j]));
+      tableData.append(add);
       tableRow.append(tableData);
+      //If a behavior exists display it
+      if(species[i].inter[species[j]])
+        add.click();
     }
     tbody.append(tableRow)
   }
   table.append(tbody);
   base.innerHTML = '';
   base.append(table);
-  $('.addInterWidget').click(function() {
-    $(this).parent().innerHTML = behaviorWigget().html;
-    //console.log([$(this).parent().index() - 1, $(this).parent().parent().index()]);
-  })
 }
 
+addOrDisplayBehavior = function(element, species1, species2) {
+  return function() {
+    var button = $(element);
+    var outer = button.parent();
+    outer.append(behaviorWigget(species1, species2,
+      species1.inter[species2]));
+    button.html('&times');
+    outer.select()
+    button.click(function() {
+      delete species1.inter[species2];
+      outer.empty();
+      outer.append(button);
+      button.html('+');
+      button.click(addOrDisplayBehavior(button, species1, species2));
+    });
+    console.log(outer.find('input'));
+    outer.find('input').change(function() {
+      alterInteraction(species1, species2).call(this);
+    });
+  };
+}
 
+alterInteraction = function(species1, species2) {
+  return function() {
+    var source = $(this);
+    console.log(source.data('target') + ' ' + source.val());
+  };
+}
 
-behaviorWigget = function(element, behavior, x, y) {
+behaviorWigget = function(species1, species2, behavior) {
   var wigget = document.createElement('form');
-  wigget.setAttribute('class', 'form-range');
-  var slide1 = document.createElement('input');
-  slide1.setAttribute('type', 'range');
-  slide1.setAttribute('')
-}
+  wigget.setAttribute('class', 'form-range p-2');
+  var uid = species1 + species2;
+  //wigget.innerHTML
+  var htmlString = '';
+  htmlString +=
+  `<label for='${uid + 'stick'}' class='col-form-label col-form-label-sm'>
+  Cohesion:</label>\n <input type='range' class='form-control-range'
+   min='0' max='10' id='${uid + 'stick'}' data-target='stick', step='1'` +
+  (behavior ? `value='${behavior.stick}'` : `value='5'`) + `>`;
 
-regenerateMatrix = function() {
-  var base = document.getElementById('interMatrix');
-  base.innerHTML = '';
-  for(var i = 0; i < species.length; i++) {
-    var row = document.createElement('div');
-    row.setAttribute('class','row');
-    for(var j = 0; j < species.length; j++) {
-      var col = document.createElement('div');
-      col.setAttribute('class','col card');
-      var card = document.createElement('div');
-      card.setAttribute('class','card-body text-center');
-      var add = document.createElement('span');
-      add.setAttribute('class','close');
-      $(add).click(function() {
-        $(this).parent();
-      });
-      add.innerHTML = '+';
-      card.append(add)
-      col.append(card);
-      row.append(col);
-    }
-    base.append(row);
-  }
+
+  return htmlString;
 }
