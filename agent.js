@@ -33,6 +33,7 @@ class Species {
     this.range = 20;
     this.maxSpeed = 2;
     this.wanderDev = 1.5;
+    this.hue = Math.floor(256*Math.random());
     this.fixed = false;
     this.id = ('0000' + Math.floor(Math.random()*10000)).slice(-4);
     this.name = 'Species #' + this.id;
@@ -58,6 +59,7 @@ class Agent {
   }
 
   show(sketch) {
+    sketch.fill(this.species.hue, 255, 255);
     sketch.ellipse(this.pos.x, this.pos.y, this.species.size, this.species.size);
   }
 

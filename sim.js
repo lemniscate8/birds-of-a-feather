@@ -21,9 +21,9 @@ var simulationSketch = function(sketch)
     species.push(new Species());
     $(species[0].html).click();
     activeSpecies.inter[activeSpecies] = new Behavior(5, 1, 1, 0);
-
     sketch.background(0);
     engine.show(sketch);
+    sketch.colorMode(sketch.HSB);
     runMode = halt;
     touchMode = addAgents;
   }
