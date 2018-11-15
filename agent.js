@@ -118,7 +118,7 @@ var cohesionVector = function(focus, agents) {
   }
   vect.mult(1.0/agents.length); //Vect is the centroid
   vect.sub(focus.pos); //Vect points from focus to centroid
-  vect.normalize();
+  //vect.normalize();
   return vect;
 }
 
@@ -126,7 +126,8 @@ var separationVector = function(focus, agents) {
   var vect = sim.createVector();
   for(let ag of agents) {
     var sep = p5.Vector.sub(focus.pos, ag.pos);
-    sep.normalize();
+    //sep.normalize();
+    sep.mult(focus.species.range/sep.magSq());
     vect.add(sep);
   }
   return vect;
