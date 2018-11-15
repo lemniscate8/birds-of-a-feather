@@ -6,7 +6,6 @@ class Behavior {
     this.wandr = w;
   }
 
-  //TODO: finish this later
   process(c, s, a, w) {
     c.mult(this.stick);
     s.mult(this.avoid);
@@ -27,11 +26,6 @@ class Transition {
   }
 }
 
-//Eventually this will need to also be/link to a document elemnent
-//so that we can interact with these variables
-
-
-
 class Species {
 
   constructor() {
@@ -40,9 +34,9 @@ class Species {
     this.maxSpeed = 2;
     this.wanderDev = 1.5;
     this.fixed = false;
-    this.name = 'Species #' + ('0000' + Math.floor(Math.random()*10000)).slice(-4);
+    this.id = ('0000' + Math.floor(Math.random()*10000)).slice(-4);
+    this.name = 'Species #' + this.id;
     this.html = speciesHTML(this.name);
-    this.id = ('000000' + Math.floor(Math.random()*1000000)).slice(-6);
     this.inter = {};
     this.trans = {};
   }
