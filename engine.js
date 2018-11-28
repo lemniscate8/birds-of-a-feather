@@ -48,6 +48,10 @@ class Engine {
   updateLocales() {
     for(let agent of this.agents) {
       var neighborhood = this.inround(agent.pos, agent.species.range);
+      var self = neighborhood.indexOf(agent);
+      if(self > -1) {
+        neighborhood.splice(self, 1);
+      }
       agent.locale = {}; //Clear the locale
       for(let near of neighborhood) {
         if(agent.locale[near.species]) {

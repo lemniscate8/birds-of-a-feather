@@ -19,12 +19,14 @@ class Behavior {
 }
 
 //Transition conditions for a species is some type of function
+//TODO: actually write this
 class Transition {
   constructor(filter, species) {
     this.condition = filter;
     this.endstate = species;
   }
 }
+
 
 class Species {
 
@@ -34,16 +36,11 @@ class Species {
     this.maxSpeed = 2;
     this.wanderDev = 1.5;
     this.hue = Math.floor(256*Math.random());
-    this.fixed = false;
     this.id = ('0000' + Math.floor(Math.random()*10000)).slice(-4);
     this.name = 'Species #' + this.id;
     this.html = speciesHTML(this.name);
     this.inter = {};
     this.trans = {};
-  }
-
-  putBehavior(species, behavior) {
-    this.trans[species.id] = behavior;
   }
 }
 
@@ -52,7 +49,7 @@ class Agent {
     this.pos = sim.createVector(x, y);
     this.vel = sim.createVector(
       mainSketch.mouseX - mainSketch.pmouseX,
-      mainSketch.mouseY - mainSketch.pmouseY).normalize();
+      mainSketch.mouseY - mainSketch.pmouseY).setMag(species.maxSpeed);
     this.acc = sim.createVector();
     this.species = species;
     this.locale = {};
@@ -79,12 +76,13 @@ class Agent {
       if(behavior == undefined)
         continue;
       //Calculate base vectors
-      var cohes = cohesionVector(this, this.locale[type]);
-      var separ = separationVector(this, this.locale[type]);
-      var align = alignmentVector(this, this.locale[type]);
-      var wandr = wanderVector(this, this.species.wanderDev); //TODO: remove magic number
-      //Apply behavioral weights
-      var combo = behavior.process(cohes, separ, align, wandr);
+      var combo = wanderVector(this, this.species.wanderDev);
+      if(this.locale[type].length != 0) {
+        var cohes = cohesionVector(this, this.locale[type]);
+        var separ = separationVector(this, this.locale[type]);
+        var align = alignmentVector(this, this.locale[type]);
+        combo = behavior.process(cohes, separ, align, combo);
+      }
       //Weight by the number of agents of that species
       combo.mult(this.locale[type].length);
       //Add to total agent count for normalization
@@ -93,11 +91,12 @@ class Agent {
       this.acc.add(combo);
     }
     //Normalize by the total count
-    this.acc.mult(1.0/count);
+    if(count > 0)
+      this.acc.mult(1.0/count);
   }
 
   update() {
-    if(this.fixed)
+    if(Object.keys(species.inter) == 0)
       return;
     this.processLocale();
     this.vel.add(this.acc);

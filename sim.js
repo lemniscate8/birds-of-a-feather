@@ -8,7 +8,7 @@ var mainSketch;
 var runMode;
 var touchMode;
 
-var penWidth = 10;
+var penWidth = 50;
 var spacing = 2;
 
 var simulationSketch = function(sketch)
@@ -32,6 +32,8 @@ var simulationSketch = function(sketch)
     if(sketch.mouseX > sketch.width || sketch.mouseX < 0)
       return;
     if(sketch.mouseY > sketch.height || sketch.mouseY < 0)
+      return;
+    if(sketch.mouseX == sketch.pmouseX && sketch.mouseY == sketch.pmouseY)
       return;
     touchMode(sketch);
   }
@@ -67,7 +69,8 @@ var halt = function(sketch) {
 var addAgents = function(sketch) {
   if(activeSpecies == null)
     return;
-  var loc = p5.Vector.random2D().mult(penWidth).add(sketch.mouseX, sketch.mouseY);
+  var loc = p5.Vector.random2D().mult(penWidth*Math.sqrt(sketch.random(0,1)));
+  loc.add(sketch.mouseX, sketch.mouseY);
   if(engine.inround(loc, spacing).length == 0) {
     engine.add(new Agent(loc.x, loc.y, activeSpecies));
   }

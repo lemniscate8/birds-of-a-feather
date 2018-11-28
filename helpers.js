@@ -12,6 +12,14 @@ $('.only-one').click(function() {
   $(this).addClass('active');
 });
 
+$('#pen-size').change(function() {
+  penWidth = parseInt($(this).val());
+});
+
+$('#pen-density').change(function() {
+  spacing = parseInt($(this).val());
+});
+
 speciesHTML = function(nameText) {
   var listItem = document.createElement('li');
   listItem.setAttribute('class','list-group-item only-one-light');
@@ -105,7 +113,7 @@ alterInteraction = function(species1, species2) {
 
 behaviorWigget = function(species1, species2, behavior) {
   var wigget = document.createElement('form');
-  wigget.setAttribute('class', 'form-range p-2');
+  wigget.setAttribute('class', 'form-horizontal p-2');
   var uid = species1 + species2;
   //wigget.innerHTML
   var htmlString = '';

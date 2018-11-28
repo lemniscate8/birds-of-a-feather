@@ -16,6 +16,7 @@
 
     <script type='text/javascript' src="p5/addons/p5.dom.js"></script>
     <script type='text/javascript' src="p5/p5.js"></script>
+    <link rel='stylesheet' type="text/css" href="custom-styles.css">
   </head>
 
   <body>
@@ -59,7 +60,7 @@
         <!-- Simulation page -->
         <div class='tab-pane fade container' id='simTab'>
           <div class='row mt-4'>
-            <div class='col-4 card' d-flex flexbox>
+            <div class='col-4 card'>
               <!-- Control panel -->
               <div class='d-flex flex-wrap justify-content-around pt-3'>
                 <div class='btn-group btn-group-large m-1'>
@@ -70,6 +71,12 @@
                   <button type='button' class='btn btn-outline-primary only-one active' onclick='touchMode=addAgents'>Add</button>
                   <button type='button' class='btn btn-outline-primary only-one' onclick='touchMode=removeAgents'>Remove</button>
                 </div>
+
+                <label for='pen-size' class='col-form-label col-form-label-sm'>Draw size:</label>
+                <input id='pen-size' class='form-control-range' type='range' min='1' max='50'></input>
+                <label for='pen-density' class='col-form-label col-form-label-sm' >Draw density:</label>
+                <input id='pen-density' class='form-control-range' type='range' min='1' max='20'></input>
+
                 <button type='button' class='btn btn-outline-primary m-1' onclick='resetEnvironment()'>Reset Environment</button>
                 <button type='button' class='btn btn-outline-primary m-1' onclick='resetAll()'>Reset All</button>
               </div>
