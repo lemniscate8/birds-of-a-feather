@@ -1,4 +1,27 @@
+/**
+ *  @fileOverview Classes for Behavior, Species and Agent as well
+ *  as core vector math
+ *
+ *  @author       Tait Weicht
+ */
+
+/**
+* A class representing a specific behavior pattern width
+* the four fundamental responses needed to create flocking
+* @class
+*/
 class Behavior {
+
+
+  /**
+   * constructor - description
+   *
+   * @param  {number} [c = 5] Cohesion weight
+   * @param  {number} [s = 5] Avoidance weight
+   * @param  {number} [a = 5] Alignment weight
+   * @param  {number} [w = 5] Wandering weight
+   * @return {Behavior}       A behavior object
+   */
   constructor(c = 5, s = 5, a = 5, w = 5) {
     this.stick = c;
     this.avoid = s;
@@ -6,6 +29,17 @@ class Behavior {
     this.wandr = w;
   }
 
+
+  /**
+   * process - function to averate a set of vectors based on the weights
+   * in the Behavior
+   *
+   * @param  {p5.Vector} c Cohesion vector
+   * @param  {p5.Vector} s Separtion vector
+   * @param  {p5.Vector} a Alignment vector
+   * @param  {p5.Vector} w Wander vector
+   * @return {p5.Vector}   A weighted average of these vectors
+   */
   process(c, s, a, w) {
     c.mult(this.stick);
     s.mult(this.avoid);
@@ -16,10 +50,16 @@ class Behavior {
     mix.add(w);
     return mix;
   }
+
+  sum() {
+    return this.stick + this.avoid + this.align + this.wandr;
+  }
 }
 
-//Transition conditions for a species is some type of function
-//TODO: actually write this
+/**
+ * A class that will represent a transition condition for a species
+ * @class
+ */
 class Transition {
   constructor(filter, species) {
     this.condition = filter;
@@ -28,8 +68,19 @@ class Transition {
 }
 
 
+
+/**
+ * A class representing a species (specific type of agent)
+ * @class
+ */
 class Species {
 
+
+  /**
+   * constructor - Creates a default Species object
+   *
+   * @return {Species}  A Species object
+   */
   constructor() {
     this.size = 2;
     this.range = 20;
@@ -45,7 +96,21 @@ class Species {
   }
 }
 
+/**
+ * A class representing an agent having a type (Species)
+ * and the ability to move in a 2D environment
+ * @class
+ */
 class Agent {
+
+  /**
+   * constructor - description
+   *
+   * @param  {number} x       X position in space
+   * @param  {number} y       Y position in space
+   * @param  {Species} species The species of the agent
+   * @return {Agent}         An Agent object
+   */
   constructor(x, y, species) {
     this.pos = sim.createVector(x, y);
     this.vel = sim.createVector(
@@ -56,11 +121,23 @@ class Agent {
     this.locale = {};
   }
 
+
+  /**
+   * show - Draws the agent on a canvas supplied
+   *
+   * @param  {p5} sketch A p5 canvas instance
+   */
   show(sketch) {
     sketch.fill(this.species.color);
     sketch.ellipse(this.pos.x, this.pos.y, this.species.size, this.species.size);
   }
 
+
+  /**
+   * processLocale - Given a region of agents nearby, adjust this agent's
+   * acceleration based on Species interactions (specified by Behavior objects)
+   *
+   */
   processLocale() {
     //Reset forces acting on agent
     this.acc.set(0, 0);
@@ -96,6 +173,10 @@ class Agent {
       this.acc.mult(1.0/count);
   }
 
+
+  /**
+   * update - Function to update this agent's position, velocity, etc
+   */
   update() {
     if(this.species.fixed)
       return;
@@ -110,7 +191,14 @@ Species.prototype.toString = function() {
   return this.id;
 }
 
-//Functions for computing group interation vectors
+
+/**
+ * var cohesionVector - function providing a vector to center of mass
+ *
+ * @param  {Agent} focus The agent the vector is created for
+ * @param  {list} agents List of agents in local area
+ * @return {p5.Vector}      The cohesion vector
+ */
 var cohesionVector = function(focus, agents) {
   var vect = sim.createVector();
   for(let ag of agents) {
@@ -122,6 +210,14 @@ var cohesionVector = function(focus, agents) {
   return vect;
 }
 
+/**
+ * var cohesionVector - function providing a vector away from the
+ * agents in the local area
+ *
+ * @param  {Agent} focus The agent the vector is created for
+ * @param  {list} agents List of agents in local area
+ * @return {p5.Vector}      The seperation vector
+ */
 var separationVector = function(focus, agents) {
   var vect = sim.createVector();
   for(let ag of agents) {
@@ -133,6 +229,14 @@ var separationVector = function(focus, agents) {
   return vect;
 }
 
+/**
+ * var cohesionVector - function averaging velocity vectors of agents
+ * in local area
+ *
+ * @param  {Agent} focus The agent the vector is created for
+ * @param  {list} agents List of agents in local area
+ * @return {p5.Vector}      The alignment vector
+ */
 var alignmentVector = function(focus, agents) {
   var vect = sim.createVector();
   for(let ag of agents) {
@@ -144,6 +248,15 @@ var alignmentVector = function(focus, agents) {
   return vect;
 }
 
+
+/**
+ * var wanderVector - function to produce a random vector offset from the
+ * agents current velocity
+ *
+ * @param  {Agent} agent The agent the vector is created for
+ * @param  {number} range The distance over which the range can very: 0 - pi for best results
+ * @return {p5.Vector}    The wander vector
+ */
 var wanderVector = function(agent, range) {
   var vect = p5.Vector.fromAngle(agent.vel.heading() + sim.random(-range, range));
   return vect;

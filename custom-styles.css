@@ -1,7 +1,7 @@
-
-
-/* Code is adapted from Brenna O'Brien
-  http://brennaobrien.com/blog/2014/05/style-input-type-range-in-every-browser.html
+/**
+ *  @fileOverview Custom styling for sliders
+ *
+ *  @author       Brenna O'Brien
  */
 
 input[type=range] {

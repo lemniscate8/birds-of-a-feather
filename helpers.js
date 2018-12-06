@@ -2,23 +2,50 @@
 //TODO: Rename this file 'unhelpers' because it's become sooooo complicated
 
 
+/**
+ * nav - Code to set items to a default mode when changing tabs
+ * (really just to stop simulating when in a different tab)
+ *
+ */
 $('.nav-item').click(function() {
   $('.default-mode').click();
 });
 
+
+/**
+ * only_one - Code to have single selection property in a list, used on
+ * the species list
+ *
+ */
 $('.only-one').click(function() {
   $(this).siblings().removeClass('active');
   $(this).addClass('active');
 });
 
+
+
+/**
+ * pen - Sets the pen size when that field changes
+ *
+ */
 $('#pen-size').change(function() {
   penWidth = parseInt($(this).val());
 });
 
+
+/**
+ * pen - Sets the pen density when that field changes
+ *
+ */
 $('#pen-density').change(function() {
   spacing = parseInt($(this).val());
 });
 
+
+/**
+ * anonymous function - Loads data into the species editor modal when it appears
+ *
+ */
 $('#speciesEditModal').on('show.bs.modal', function (e) {
   var nameList = ['size', 'range', 'maxSpeed', 'wanderDev', 'color', 'name'];
   for(var item of nameList) {
@@ -27,6 +54,12 @@ $('#speciesEditModal').on('show.bs.modal', function (e) {
   $('#active-fixed').checked = activeSpecies.fixed;
 })
 
+
+/**
+ * input - Saves numeric data into the active species when it is edited in
+ *  the modal
+ *
+ */
 $('#speciesEditForm').find("input[type='number']").change(function() {
   var value = parseFloat($(this).val());
   if(!isNaN(value)) {
@@ -34,6 +67,12 @@ $('#speciesEditForm').find("input[type='number']").change(function() {
   }
 });
 
+
+/**
+ * input - Saves text data into the active species when it is edited in
+ *  the modal
+ *
+ */
 $('#speciesEditForm').find("input[type='text']").change(function() {
   var value = $(this).val();
   if(value) {
@@ -45,10 +84,24 @@ $('#speciesEditForm').find("input[type='text']").change(function() {
   }
 });
 
+
+/**
+ * input - Saves check box data into the active species when it is edited in
+ *  the modal
+ *
+ */
 $('#speciesEditForm').find("input[type='checkbox']").change(function() {
   activeSpecies[$(this).attr('name')] = $(this).prop('checked');
 });
 
+
+
+/**
+ * speciesHTML - speciesHTML - Creates the DOM element for the species to be displayed on the
+ * index page
+ *
+ * @param  {string} nameText The name of the species
+ */
 speciesHTML = function(nameText) {
   var listItem = document.createElement('li');
   listItem.setAttribute('class','list-group-item only-one-light');
@@ -83,6 +136,12 @@ speciesHTML = function(nameText) {
   return listItem;
 }
 
+
+/**
+ * genTable - Function to generate the interaction table for species whenever
+ * that tab is opened
+ *
+ */
 genTable = function() {
   var base = document.getElementById('interMatrix');
   var table = document.createElement('table');
@@ -120,6 +179,17 @@ genTable = function() {
   base.append(table);
 }
 
+
+/**
+ * addOrDisplayBehavior - a closure to provide create a behavior edit form
+ * when "+" is clicked
+ *
+ * @param  {HTMLElement} element  A reference to the element the behavior form wil be in
+ * @param  {Species} species1 The column species
+ * @param  {Species} species2 The row species
+ * @return {function}          A closure
+ */
+var testVar;
 addOrDisplayBehavior = function(element, species1, species2) {
   return function() {
     var button = $(this);
@@ -145,6 +215,15 @@ addOrDisplayBehavior = function(element, species1, species2) {
   };
 }
 
+
+/**
+ * alterInteraction - A function to create a closure that exits the behavior
+ * of some species... frankly this is in deep
+ *
+ * @param  {Species} species1 First species
+ * @param  {Species} species2 Second species
+ * @return {Function}          A closure
+ */
 alterInteraction = function(species1, species2) {
   return function() {
     var source = $(this);
@@ -152,6 +231,16 @@ alterInteraction = function(species1, species2) {
   };
 }
 
+
+/**
+ * behaviorWigget - Generates a form for a specific behavior interaction
+ * between two species
+ *
+ * @param  {Species} species1 First species
+ * @param  {Species} species2 Second species
+ * @param  {Behavior} behavior A behavior object
+ * @return {HTMLElement}          A widget with sliders to edit species
+ */
 behaviorWigget = function(species1, species2, behavior) {
   var wigget = document.createElement('form');
   wigget.setAttribute('class', 'form-horizontal p-2');
@@ -183,13 +272,4 @@ behaviorWigget = function(species1, species2, behavior) {
    value='${behavior.wandr}'>`;
 
   return htmlString;
-}
-
-resetEnvironment = function() {
-  engine.agents = [];
-}
-
-resetAll = function() {
-  engine.agents = [];
-  $('.speciesDelete').click();
 }
