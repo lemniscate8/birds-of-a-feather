@@ -1,5 +1,5 @@
 class Behavior {
-  constructor(c, s, a, w) {
+  constructor(c = 5, s = 5, a = 5, w = 5) {
     this.stick = c;
     this.avoid = s;
     this.align = a;
@@ -35,7 +35,8 @@ class Species {
     this.range = 20;
     this.maxSpeed = 2;
     this.wanderDev = 1.5;
-    this.hue = Math.floor(256*Math.random());
+    this.color = mainSketch.color(Math.floor(360*Math.random()), 100, 50);
+    this.fixed = false;
     this.id = ('0000' + Math.floor(Math.random()*10000)).slice(-4);
     this.name = 'Species #' + this.id;
     this.html = speciesHTML(this.name);
@@ -56,7 +57,7 @@ class Agent {
   }
 
   show(sketch) {
-    sketch.fill(this.species.hue, 255, 255);
+    sketch.fill(this.species.color);
     sketch.ellipse(this.pos.x, this.pos.y, this.species.size, this.species.size);
   }
 
@@ -96,7 +97,7 @@ class Agent {
   }
 
   update() {
-    if(Object.keys(species.inter) == 0)
+    if(this.species.fixed)
       return;
     this.processLocale();
     this.vel.add(this.acc);

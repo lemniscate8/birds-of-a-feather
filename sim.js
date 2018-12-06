@@ -8,7 +8,7 @@ var mainSketch;
 var runMode;
 var touchMode;
 
-var penWidth = 50;
+var penWidth = 10;
 var spacing = 2;
 
 var simulationSketch = function(sketch)
@@ -20,10 +20,10 @@ var simulationSketch = function(sketch)
     engine = new Engine(sketch.width, sketch.height, 20);
     species.push(new Species());
     $(species[0].html).click();
-    activeSpecies.inter[activeSpecies] = new Behavior(5, 1, 1, 0);
+    activeSpecies.inter[activeSpecies] = new Behavior();
     sketch.background(0);
     engine.show(sketch);
-    sketch.colorMode(sketch.HSB);
+    sketch.colorMode(sketch.HSL);
     runMode = halt;
     touchMode = addAgents;
   }
@@ -57,6 +57,7 @@ var run = function(sketch) {
   for(let agent of interest) {
     agent.show(sketch);
   }
+  drawCursor(sketch);
 }
 
 var halt = function(sketch) {
@@ -64,6 +65,14 @@ var halt = function(sketch) {
   sketch.fill(255);
   sketch.noStroke();
   engine.show(sketch);
+  drawCursor(sketch);
+}
+
+var drawCursor = function(sketch) {
+  sketch.noFill();
+  sketch.stroke(255, 10);
+  sketch.ellipse(sketch.mouseX, sketch.mouseY, 2*penWidth, 2*penWidth);
+  sketch.ellipse(sketch.mouseX, sketch.mouseY, 2*spacing, 2*spacing);
 }
 
 var addAgents = function(sketch) {

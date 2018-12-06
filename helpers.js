@@ -1,8 +1,7 @@
 
 //TODO: Rename this file 'unhelpers' because it's become sooooo complicated
 
-//Switching pages causes simualtion defaults to be reset
-//(right now just stops the simulation)
+
 $('.nav-item').click(function() {
   $('.default-mode').click();
 });
@@ -20,13 +19,50 @@ $('#pen-density').change(function() {
   spacing = parseInt($(this).val());
 });
 
+$('#speciesEditModal').on('show.bs.modal', function (e) {
+  var nameList = ['size', 'range', 'maxSpeed', 'wanderDev', 'color', 'name'];
+  for(var item of nameList) {
+    $('#active-' + item).val(activeSpecies[item]);
+  }
+  $('#active-fixed').checked = activeSpecies.fixed;
+})
+
+$('#speciesEditForm').find("input[type='number']").change(function() {
+  var value = parseFloat($(this).val());
+  if(!isNaN(value)) {
+    activeSpecies[$(this).attr('name')] = value;
+  }
+});
+
+$('#speciesEditForm').find("input[type='text']").change(function() {
+  var value = $(this).val();
+  if(value) {
+    var name = $(this).attr('name');
+    activeSpecies[name] = value;
+    if(name == 'name') {
+      $(activeSpecies.html).find(':first-child').html(value);
+    }
+  }
+});
+
+$('#speciesEditForm').find("input[type='checkbox']").change(function() {
+  activeSpecies[$(this).attr('name')] = $(this).prop('checked');
+});
+
 speciesHTML = function(nameText) {
   var listItem = document.createElement('li');
   listItem.setAttribute('class','list-group-item only-one-light');
-  var name = document.createTextNode(nameText);
+  var name = document.createElement('span');
+  name.innerHTML = nameText;
   listItem.append(name);
+  var editSpan = document.createElement('span');
+  editSpan.setAttribute('class','close speciesDelete');
+  editSpan.setAttribute('data-toggle','modal');
+  editSpan.setAttribute('data-target','#speciesEditModal');
+  editSpan.setAttribute('onclick', '$(".default-mode").click();')
+  editSpan.innerHTML = '&#9998;';
   var closeSpan = document.createElement('span');
-  closeSpan.setAttribute('class','close speciesDelete');
+  closeSpan.setAttribute('class','close speciesDelete ml-2');
   closeSpan.innerHTML = '&times';
   $(closeSpan).click(function() {
     var li = $(this).parent();
@@ -37,6 +73,7 @@ speciesHTML = function(nameText) {
     li.remove();
   });
   listItem.append(closeSpan);
+  listItem.append(editSpan);
   $(listItem).click(function() {
     $(this).siblings('li').removeClass('list-group-item-primary');
     $(this).addClass('list-group-item-primary');
@@ -87,9 +124,13 @@ addOrDisplayBehavior = function(element, species1, species2) {
   return function() {
     var button = $(this);
     var outer = button.parent();
+    if(species1.inter[species2] == undefined) {
+      species1.inter[species2] = new Behavior(Math.round(5*Math.random()+1),
+                                              Math.round(5*Math.random()+1),
+                                              Math.round(5*Math.random()+1),
+                                              Math.round(5*Math.random()+1));
+    }
     outer.append(behaviorWigget(species1, species2, species1.inter[species2]));
-    if(species1.inter[species2] == undefined)
-      species1.inter[species2] = new Behavior(5, 5, 5, 5);
     outer.find('input').change(function() {
       alterInteraction(species1, species2).call(this);
     });
@@ -120,26 +161,26 @@ behaviorWigget = function(species1, species2, behavior) {
   htmlString +=
   `<label for='${uid + 'stick'}' class='col-form-label col-form-label-sm'>
   Cohesion:</label>\n <input type='range' class='form-control-range'
-   min='0' max='10' id='${uid + 'stick'}' data-target='stick', step='1'` +
-  (behavior ? `value='${behavior.stick}'` : `value='5'`) + `>`;
+   min='0' max='10' id='${uid + 'stick'}' data-target='stick', step='1'
+   value='${behavior.stick}'>`;
 
   htmlString +=
   `<label for='${uid + 'avoid'}' class='col-form-label col-form-label-sm'>
   Avoidance:</label>\n <input type='range' class='form-control-range'
-   min='0' max='10' id='${uid + 'avoid'}' data-target='avoid', step='1'` +
-  (behavior ? `value='${behavior.avoid}'` : `value='5'`) + `>`;
+   min='0' max='10' id='${uid + 'avoid'}' data-target='avoid', step='1'
+   value='${behavior.avoid}'>`;
 
   htmlString +=
   `<label for='${uid + 'align'}' class='col-form-label col-form-label-sm'>
   Alignment:</label>\n <input type='range' class='form-control-range'
-   min='0' max='10' id='${uid + 'align'}' data-target='align', step='1'` +
-  (behavior ? `value='${behavior.align}'` : `value='5'`) + `>`;
+   min='0' max='10' id='${uid + 'align'}' data-target='align', step='1'
+   value='${behavior.align}'>`;
 
   htmlString +=
   `<label for='${uid + 'wandr'}' class='col-form-label col-form-label-sm'>
   Wandering:</label>\n <input type='range' class='form-control-range'
-   min='0' max='10' id='${uid + 'wandr'}' data-target='wandr', step='1'` +
-  (behavior ? `value='${behavior.wandr}'` : `value='5'`) + `>`;
+   min='0' max='10' id='${uid + 'wandr'}' data-target='wandr', step='1'
+   value='${behavior.wandr}'>`;
 
   return htmlString;
 }
