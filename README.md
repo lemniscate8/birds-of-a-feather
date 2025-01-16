@@ -1,6 +1,6 @@
 # birds-of-a-feather
 
-Birds-of-a-feather is a agent based simulation. It allows you to specify the behavior of classes of agents and lets you explore how they interact with each other in a 2D environment.
+Birds-of-a-feather is an agent-based flocking simulation. It allows you to specify the behavior of classes of agents and lets you explore how they interact with each other in a 2D environment.
 
 ### Installation
 To use this software simply download the repository and open the `index.html` file in your browser of choice.
